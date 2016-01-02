@@ -31,6 +31,12 @@
 #define BRAKE 3
 #define RELEASE 4
 
+// speed
+#define SPEED 170
+#define SPEED_TURN 190
+// adjustment forward/backward
+#define SPEED_ADJ 25
+
 // web server
 YunServer server;
 
@@ -66,8 +72,6 @@ void process(YunClient client)
   }
 }
 
-int speed=150;
-
 // Process robot commands
 void robotCommand(YunClient client)
 {
@@ -75,13 +79,13 @@ void robotCommand(YunClient client)
   if(command=="stop") {
     halt();
   } else if(command=="forward") {
-    forward(speed);
+    forward(SPEED);
   } else if(command=="backward") {
-    backward(speed);
+    backward(SPEED);
   } else if(command=="right") {
-    right(speed);
+    right(SPEED_TURN);
   } else if(command=="left") {
-    left(speed);
+    left(SPEED_TURN);
   }
 }
 
@@ -93,13 +97,13 @@ void halt(void)
 
 void forward(int speed)
 {
-  run_motors(speed, FORWARD, speed, FORWARD);
+  run_motors(speed+SPEED_ADJ, FORWARD, speed, FORWARD);
 }
 
 
 void backward(int speed)
 {
-  run_motors(speed, BACKWARD, speed, BACKWARD);
+  run_motors(speed+SPEED_ADJ, BACKWARD, speed, BACKWARD);
 }
 
 
