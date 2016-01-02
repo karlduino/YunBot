@@ -21,38 +21,70 @@
 */
 
 #include <Wire.h>
+#include <Bridge.h>
+#include <YunServer.h>
+#include <YunClient.h>
+
+// used by Adafruit AFMotor library
 #define FORWARD 1
 #define BACKWARD 2
 #define BRAKE 3
 #define RELEASE 4
 
+// web server
+YunServer server;
+
 void setup()
 {
-  Wire.begin(4);
+  Wire.begin();
+  Bridge.begin();
+  server.listenOnLocalhost();
+  server.begin();
 }
 
 void loop()
 {
-  forward(150);
-  delay(2000);
-  halt();
-  delay(2000);
-  
-  backward(150);
-  delay(2000);
-  halt();
-  delay(2000);
-  
-  right(150);
-  delay(2000);
-  halt();
-  delay(2000);
-  
-  left(150);
-  delay(2000);
-  halt();
-  delay(2000);
+  YunClient client = server.accept();
+
+  if(client) {
+    // process request
+    process(client);
+
+    // close connection
+    client.stop();
+  }
+
+  delay(50);
 }
+
+// Process called when the REST API is called
+void process(YunClient client)
+{
+  String command = client.readStringUntil('/');
+  if(command == "robot") {
+    robotCommand(client);
+  }
+}
+
+int speed=150;
+
+// Process robot commands
+void robotCommand(YunClient client)
+{
+  String command = client.readStringUntil('\r');
+  if(command=="stop") {
+    halt();
+  } else if(command=="forward") {
+    forward(speed);
+  } else if(command=="backward") {
+    backward(speed);
+  } else if(command=="right") {
+    right(speed);
+  } else if(command=="left") {
+    left(speed);
+  }
+}
+
 
 void halt(void)
 {
