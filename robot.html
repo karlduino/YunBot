@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://jpillora.com/jquery.rest/dist/1/jquery.rest.min.js"></script>
+<style>body { font-family: Sans-Serif; }</style>
+
+<script>
+client = new $.RestClient('http://karlduino3.local/arduino/robot/')
+client.add("forward")
+client.add("backward")
+client.add("stop")
+client.add("right")
+client.add("left")
+</script>
+</head>
+
+<body>
+<h2>Y&uacute;n robot</h2>
+
+<input type="submit" id="Forward" value="Forward"></br>
+<input type="submit" id="Left" value="Left">
+<input type="submit" id="Stop" value="Stop">
+<input type="submit" id="Right" value="Right"></br>
+<input type="submit" id="Backward" value="Backward">
+</body>
+
+<script>
+$("#Forward").click(function() { client.forward.read(); })
+$("#Stop").click(function() { client.stop.read(); })
+$("#Backward").click(function() { client.backward.read(); })
+$("#Left").click(function() { client.left.read(); })
+$("#Right").click(function() { client.right.read(); })
+</script>
+
+</head>
+</html>
