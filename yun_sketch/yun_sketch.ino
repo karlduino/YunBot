@@ -71,13 +71,13 @@ void backward(int speed)
 }
 
 
-void left(int speed)
+void right(int speed)
 {
   run_motors(speed, FORWARD, speed, BACKWARD);
 }
 
 
-void right(int speed)
+void left(int speed)
 {
   run_motors(speed, BACKWARD, speed, FORWARD);
 }
